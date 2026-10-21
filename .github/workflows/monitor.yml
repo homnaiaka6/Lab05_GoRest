@@ -1,0 +1,21 @@
+name: GoREST API Monitor
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check API availability and response time
+        run: |
+          curl -sS -o response.json -w "HTTP Status: %{http_code}\nResponse Time: %{time_total}\n" "https://gorest.co.in/public/v2/users" -H "Accept: application/json"
+          STATUS=$(curl -sS -o /dev/null -w "%{http_code}" "https://gorest.co.in/public/v2/users")
+          TIME=$(curl -sS -o /dev/null -w "%{time_total}" "https://gorest.co.in/public/v2/users")
+          echo "Status: $STATUS"
+          echo "Response time: ${TIME}s"
+          test "$STATUS" = "200"
+          awk "BEGIN {exit !($TIME < 0.8)}"
