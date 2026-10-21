@@ -1,4 +1,3 @@
-
 name: GoREST API Tests
 
 on:
@@ -12,6 +11,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Check repository files
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Root files:"
+          ls -la
+          echo "Find test files:"
+          find . -type f \( -name "collection.json" -o -name "environment.json" -o -name "users.csv" \)
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
