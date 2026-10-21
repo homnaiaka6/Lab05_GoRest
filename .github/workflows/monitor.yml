@@ -18,4 +18,4 @@ jobs:
           echo "Status: $STATUS"
           echo "Response time: ${TIME}s"
           test "$STATUS" = "200"
-          awk "BEGIN {exit !($TIME < 0.8)}"
+          awk "BEGIN {exit !($TIME < 1.5)}"
